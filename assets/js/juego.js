@@ -2,13 +2,13 @@
 (() => {
     'use strict'
 
-    let deck             = []
+    let deck = []
 
-    const letrasCartas   = ['C', 'D', 'H', 'S']
+    const letrasCartas = ['C', 'D', 'H', 'S']
 
-    const especiales     = ['A', 'J', 'Q', 'K']
+    const especiales = ['A', 'J', 'Q', 'K']
 
-    let puntosJugador    = 0
+    let puntosJugador = 0
 
     let puntosComputador = 0
 
@@ -19,41 +19,41 @@
     var btn3 = document.querySelector('#btn3')
 
 
-    const  divCartasJugador = document.querySelector('#jugador-cartas')
-    const  divCartasComputador = document.querySelector('#computador-cartas')
+    const divCartasJugador = document.querySelector('#jugador-cartas')
+    const divCartasComputador = document.querySelector('#computador-cartas')
 
 
     const puntosHTML = document.querySelectorAll('span')
 
-   
+
 
     // funcion para crear una nueva baraja cada q pidamos la carta
-    function crearDeck(){
+    function crearDeck() {
 
-        for( let i = 2; i <= 10; i++) {
-            for( let letras of letrasCartas){
-                deck.push(i + letras);          
+        for (let i = 2; i <= 10; i++) {
+            for (let letras of letrasCartas) {
+                deck.push(i + letras);
             }
         }
-        for(let especial of especiales){
-            for(let letras of letrasCartas){
+        for (let especial of especiales) {
+            for (let letras of letrasCartas) {
                 deck.push(especial + letras)
             }
         }
-        
+
 
         return _.shuffle(deck)
-        
+
 
     }
 
-    
-    //funcion para pedir carta en especifico
-    function pedirCarta(){
 
-        if(deck.length === 0) {
+    //funcion para pedir carta en especifico
+    function pedirCarta() {
+
+        if (deck.length === 0) {
             throw 'no hay cartas en el deck'
-        }   
+        }
         let carta = deck.pop();
 
         return carta
@@ -61,15 +61,15 @@
 
     //saber el valor de la carta
 
-    function valorCarta(cartaAlDeck){
+    function valorCarta(cartaAlDeck) {
 
         const valor = cartaAlDeck.substring(0, cartaAlDeck.length - 1)
 
         let puntos = 0
 
-        if(isNaN(valor)){
+        if (isNaN(valor)) {
             puntos = 10
-        }else{
+        } else {
             puntos = parseInt(valor)
         }
 
@@ -78,36 +78,36 @@
 
     //TURNO DE LA COMPUTADORA
 
-    function turnoComputadora(puntosMinimos){
+    function turnoComputadora(puntosMinimos) {
         do {
-        let miCarta = pedirCarta()
+            let miCarta = pedirCarta()
 
-        puntosComputador = puntosComputador + valorCarta(miCarta)
-        
-        puntosHTML[1].innerText = puntosComputador
+            puntosComputador = puntosComputador + valorCarta(miCarta)
 
-        const imgCarta = document.createElement('img')
+            puntosHTML[1].innerText = puntosComputador
 
-        imgCarta.src = `assets/cartas/${miCarta}.png`
+            const imgCarta = document.createElement('img')
 
-        divCartasComputador.append(imgCarta)
+            imgCarta.src = `assets/cartas/${miCarta}.png`
 
-        imgCarta.classList.add('carta')
+            divCartasComputador.append(imgCarta)
 
-            if(puntosMinimos > 21){
+            imgCarta.classList.add('carta')
+
+            if (puntosMinimos > 21) {
                 break;
             }
 
         } while ((puntosComputador < puntosMinimos) && (puntosMinimos <= 21));
-        
+
         setTimeout(() => {
-            if(puntosComputador === puntosMinimos){
+            if (puntosComputador === puntosMinimos) {
                 alert('nadie gana')
-            }else if(puntosMinimos > 21){
+            } else if (puntosMinimos > 21) {
                 alert("computadora gana")
-            }else if(puntosComputador > 21){
+            } else if (puntosComputador > 21) {
                 alert("jugador gana")
-            }else if(puntosComputador > puntosMinimos){
+            } else if (puntosComputador > puntosMinimos) {
                 alert("pc gana")
             }
         }, 100);
@@ -115,11 +115,11 @@
 
     //EVENTO PEDIR CARTA
 
-    btn2.addEventListener('click', function(){
+    btn2.addEventListener('click', function () {
         let miCarta = pedirCarta()
 
         puntosJugador = puntosJugador + valorCarta(miCarta)
-        
+
         puntosHTML[0].innerText = puntosJugador
 
         const imgCarta = document.createElement('img')
@@ -130,14 +130,14 @@
 
         imgCarta.classList.add('carta')
 
-        if (puntosJugador > 21){
+        if (puntosJugador > 21) {
             console.log('has perdido')
             btn2.disabled = true // asi puedo deshabilitar un boton o funcion
             btn3.disabled = true
-        
+
             turnoComputadora(puntosJugador)
 
-        }else if(puntosJugador === 21){
+        } else if (puntosJugador === 21) {
             console.log('felicitaciones 21')
             btn2.disabled = true
             btn3.disabled = true
@@ -153,21 +153,21 @@
     })
 
 
-    btn1.addEventListener('click', function(){
+    btn1.addEventListener('click', function () {
 
         deck = []
         deck = crearDeck()
 
-        puntosJugador     = 0;
+        puntosJugador = 0;
         puntosComputador = 0;
-        
+
         puntosHTML[0].innerText = 0;
         puntosHTML[1].innerText = 0;
 
         divCartasComputador.innerHTML = '';
         divCartasJugador.innerHTML = '';
 
-        btn2.disabled   = false;
+        btn2.disabled = false;
         btn3.disabled = false;
 
     })
